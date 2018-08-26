@@ -103,13 +103,13 @@
           {{#each this.translations as | trans |}}
           <div class="row">
             
-              <p class="card-text col-auto">{{trans.foreignPhrase}}</p>
+              <p class="card-text col-auto">{{trans.trans}}</p>
               <div class="col-auto">
-                <button class="col-auto btn btn-warning voteTotal">{{trans.rating}}</button> {{!--
+                <button class="col-auto btn btn-warning voteTotal">{{trans.votes}}</button> {{!--
                 <!-- {{vote total}}-->--}}
-                <button class="col-auto btn btn-primary upBtn">^</button>
+                <button trans-id="{{trans.id}}" vote-type="up" class="col-auto btn btn-primary voteBtn">^</button>
                 <!--Upvote functionality with a button here. Numerical linking to specific translation in db.-->
-                <button class="col-auto btn btn-danger downBtn">V</button>
+                <button trans-id="{{trans.id}}" vote-type="down" class="col-auto btn btn-danger voteBtn">v</button>
               </div>
 
             

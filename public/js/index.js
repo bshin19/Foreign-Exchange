@@ -3,6 +3,7 @@ var $engBaseField = $("#engBaseField");
 var $foreignLangSub = $("#foreignLangSub");
 var $submitBtn = $("#submit");
 var $exampleList = $("#example-list");
+var $voteBtn = $(".voteBtn");
 
 console.log($engBaseField);
 console.log($foreignLangSub);
@@ -31,6 +32,12 @@ var API = {
       url: "api/examples/" + id,
       type: "DELETE"
     });
+  },
+  vote: (voteType, transId) => {
+    return $.ajax({
+      url: '/api/vote/' + voteType + '/' + transId,
+      type: "PUT"
+    })
   }
 };
 
@@ -63,10 +70,17 @@ var handleFormSubmit = function(event) {
 };
 
 
+var handleVote = event => {
+  API.vote($(event.target).attr('vote-type'), $(event.target).attr('trans-id')).then( () => {
+    location.reload()
+  })
+}
 
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
+$voteBtn.on("click", handleVote);
+//$exampleList.on("click", ".delete", handleDeleteBtnClick);
+
 // add event listener to the value changes in the language box
 
 // $foreignLangSub.on("click", handleFormSubmit);
