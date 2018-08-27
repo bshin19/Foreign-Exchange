@@ -3,6 +3,8 @@ var $engBaseField = $("#engBaseField");
 var $foreignLangSub = $("#foreignLangSub");
 var $submitBtn = $("#submit");
 var $exampleList = $("#example-list");
+var $voteBtn = $(".voteBtn");
+var $newTransBtn = $(".newTransBtn")
 
 console.log($engBaseField);
 console.log($foreignLangSub);
@@ -31,6 +33,22 @@ var API = {
       url: "api/examples/" + id,
       type: "DELETE"
     });
+  },
+  vote: (voteType, transId) => {
+    return $.ajax({
+      url: '/api/vote/' + voteType + '/' + transId,
+      type: "PUT"
+    })
+  },
+  addTrans: (newTransObj) => {
+    return $.ajax({
+      headers: {
+        "Content-Type": "application/json"
+      },
+      url: '/api/newTrans/',
+      type: 'POST',
+      data: JSON.stringify(newTransObj)
+    })
   }
 };
 
@@ -63,10 +81,34 @@ var handleFormSubmit = function(event) {
 };
 
 
+var handleVote = event => {
+  API.vote($(event.target).attr('vote-type'), $(event.target).attr('trans-id')).then( () => {
+    location.reload()
+  })
+}
+
+var handleNewTrans = event => {
+  event.preventDefault()
+  let pId = $(event.target).attr('phrase-id')
+  let nt = $("#new-trans-" + pId).val().trim()
+  console.log('New translation: ' + nt + ' for phrase ID: ' + pId)
+  let transObj = {
+    phraseId: pId,
+    trans: nt,
+    language: $foreignLangSub.val().trim(),
+    votes: 0
+  }
+  API.addTrans(transObj).then( () => {
+    location.reload()
+  })
+}
 
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
+$voteBtn.on("click", handleVote);
+$newTransBtn.on('click', handleNewTrans)
+//$exampleList.on("click", ".delete", handleDeleteBtnClick);
+
 // add event listener to the value changes in the language box
 
 // $foreignLangSub.on("click", handleFormSubmit);
