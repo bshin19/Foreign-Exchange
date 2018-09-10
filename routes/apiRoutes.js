@@ -32,7 +32,7 @@ module.exports = function (app) {
   });
 
   // Create a new phrase
-  app.post("/api/units", function (req, res) {
+  app.post("/api/examples", function (req, res) {
     console.log("----------------------------------------- REQ BODY");
     console.log(req.body);
     db.Example.findOrCreate({
